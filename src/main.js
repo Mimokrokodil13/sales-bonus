@@ -75,7 +75,7 @@ function analyzeSalesData(data, options) {
     // Чек
     const seller = sellerIndex[record.seller_id]; // Продавец
     // Увеличить количество продаж
-    seller.sales_count++;
+    
     // Увеличить общую сумму всех продаж
     seller.revenue += record.total_amount;
 
@@ -89,6 +89,7 @@ function analyzeSalesData(data, options) {
       // Посчитать прибыль: выручка минус себестоимость
       // Увеличить общую накопленную прибыль (profit) у продавца
       seller.profit += revenue - cost;
+      seller.sales_count++;
       // Учёт количества проданных товаров
       if (!seller.products_sold[item.sku]) {
         seller.products_sold[item.sku] = 0;
