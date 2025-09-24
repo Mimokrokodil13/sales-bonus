@@ -58,11 +58,6 @@ function analyzeSalesData(data, options) {
     profit: 0, // Прибыль от продаж продавца
     sales_count: 0, // Количество продаж
     products_sold: [
-      // Топ-10 проданных товаров в штуках
-      // {
-      //     sku: 'SKU_001', // Артикул товара
-      //     quantity: 12, // Сколько продано
-      // },
     ],
     bonus: 0, // Итоговый бонус в рублях, не процент
   }));
@@ -75,6 +70,7 @@ function analyzeSalesData(data, options) {
     // Чек
     const seller = sellerIndex[record.seller_id]; // Продавец
     // Увеличить количество продаж
+    seller.sales_count++;
     
     // Увеличить общую сумму всех продаж
     seller.revenue += record.total_amount;
@@ -89,15 +85,15 @@ function analyzeSalesData(data, options) {
       // Посчитать прибыль: выручка минус себестоимость
       // Увеличить общую накопленную прибыль (profit) у продавца
       seller.profit += revenue - cost;
-      seller.sales_count++;
       // Учёт количества проданных товаров
       if (!seller.products_sold[item.sku]) {
         seller.products_sold[item.sku] = 0;
       }
       // По артикулу товара увеличить его проданное количество у продавца
-      seller.products_sold[item.sku]++;
+      seller.products_sold[item.sku]+=item.quantity;
     });
   });
+  console.log(sellerStats)
 
   // @TODO: Сортировка продавцов по прибыли
   sellerStats.sort((a, b) => b.profit - a.profit);
